@@ -1,8 +1,11 @@
 import {Component, ElementRef} from '@angular/core';
 import {Input, ModalController} from '@ionic/angular';
-import {DatatablesComponent} from '../components/datatables/datatables.component';
 import {FormControl, FormGroup} from '@angular/forms';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Slab} from '../models/slab';
+import {DatatablesComponent} from '../components/datatables/datatables.component';
+import {ResultComponent} from '../components/result/result.component';
+import {CalculationService} from '../serivces/calculation.service';
 
 @Component({
     selector: 'app-home',
@@ -28,7 +31,9 @@ export class HomePage {
         emat: new FormControl(18),
         alpha: new FormControl(0.9)
     });
-    constructor(public modalController: ModalController) {}
+
+    constructor(public modalController: ModalController, private calculationService: CalculationService) {
+    }
 
     async openWeightDialog(inputElement: Input) {
         console.log({message: `select weight for element`, el: inputElement});
@@ -62,5 +67,25 @@ export class HomePage {
         slab.alpha = this.formGroup.get('alpha').value;
 
         console.log({message: 'request calculation', slab});
+        this.calculationService.calculate(slab)
+            .subscribe((response: Slab) => {
+                console.log(response);
+                this.showResult(response);
+            },
+            (error: HttpErrorResponse) => {
+                console.error(error);
+            }
+        );
+    }
+
+    private async showResult(response: Slab) {
+        const modal = await this.modalController.create({
+            component: ResultComponent,
+            componentProps: {
+                result: response
+            },
+            showBackdrop: false
+        });
+        return await modal.present();
     }
 }

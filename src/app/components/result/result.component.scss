@@ -1,0 +1,14 @@
+#memorial-table {
+  border-collapse: collapse;
+  font-size: 10pt;
+  width: 200px;
+  margin: auto;
+
+  td {
+    border: 1px gray solid;
+    padding: 5px;
+  }
+  td:nth-child(1) {
+    width: 5em;
+  }
+}
