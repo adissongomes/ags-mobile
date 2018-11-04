@@ -1,5 +1,7 @@
 {
   "name": "webslab-mobile",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
