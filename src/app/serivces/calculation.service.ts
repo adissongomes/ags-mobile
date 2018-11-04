@@ -13,7 +13,9 @@ export class CalculationService {
     }
 
     calculate(slab: Slab): Observable<Slab> {
-        return this.http.post<Slab>(`http://webslab.herokuapp.com/api/calculation`, slab);
+        const url = `${environment.apiUrl}/calculation`;
+        console.log(environment);
+        return this.http.post<Slab>(url, slab);
         // return this.http.post<Slab>(`${environment.apiUrl}/calculation`, slab);
     }
 }

@@ -1,5 +1,5 @@
 import {Component, ElementRef} from '@angular/core';
-import {Input, ModalController} from '@ionic/angular';
+import {AlertController, Input, LoadingController, ModalController} from '@ionic/angular';
 import {FormControl, FormGroup} from '@angular/forms';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Slab} from '../models/slab';
@@ -32,7 +32,10 @@ export class HomePage {
         alpha: new FormControl(0.9)
     });
 
-    constructor(public modalController: ModalController, private calculationService: CalculationService) {
+    constructor(private modalController: ModalController,
+                private alertController: AlertController,
+                private loadingController: LoadingController,
+                private calculationService: CalculationService) {
     }
 
     async openWeightDialog(inputElement: Input) {
@@ -67,6 +70,8 @@ export class HomePage {
         slab.alpha = this.formGroup.get('alpha').value;
 
         console.log({message: 'request calculation', slab});
+        this.presentLoading();
+
         this.calculationService.calculate(slab)
             .subscribe((response: Slab) => {
                 console.log(response);
@@ -74,8 +79,19 @@ export class HomePage {
             },
             (error: HttpErrorResponse) => {
                 console.error(error);
+                this.showErrorResponse(error);
+            }, () => {
+                this.loadingController.dismiss();
             }
         );
+    }
+
+    private async presentLoading() {
+        const loading = await this.loadingController.create({
+            message: 'Calculando...',
+            duration: 0
+        });
+        return await loading.present();
     }
 
     private async showResult(response: Slab) {
@@ -87,5 +103,16 @@ export class HomePage {
             showBackdrop: false
         });
         return await modal.present();
+    }
+
+    private async showErrorResponse(error: HttpErrorResponse) {
+        const alert = await this.alertController.create({
+            header: 'Erro ao efetuar cálculo',
+            subHeader: 'Chamada http falha',
+            message: `Falha ao chamar o webservice de cálculo. ${error.status} - ${error.message}`,
+            buttons: ['OK']
+        });
+
+        await alert.present();
     }
 }

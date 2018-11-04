@@ -1,7 +1,7 @@
 <ion-content>
-    <a style="float: right; padding: 12px; font-size: 2em;" (click)="close()" href="#">
-        <ion-icon name="close-circle" slot="end"></ion-icon>
-    </a>
+    <span style="cursor:pointer; float: right; padding: 12px; font-size: 2em;" (click)="close()">
+        <ion-icon style="color: var(--ion-color-tertiary)" name="close-circle" slot="end"></ion-icon>
+    </span>
 
     <table *ngIf="datatableType === 'weight'">
         <thead>
