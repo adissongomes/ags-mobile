@@ -1,7 +1,7 @@
 {
-  "name": "webslab-mobile",
+  "name": "AGS Slab Calc",
   "version": "0.0.1",
-  "author": "Ionic Framework",
+  "author": "Adisson Gomes",
   "homepage": "http://ionicframework.com/",
   "scripts": {
     "ng": "ng",

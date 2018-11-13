@@ -1,4 +1,4 @@
-import {Component, ElementRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AlertController, Input, LoadingController, ModalController} from '@ionic/angular';
 import {FormControl, FormGroup} from '@angular/forms';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
@@ -6,13 +6,14 @@ import {Slab} from '../models/slab';
 import {DatatablesComponent} from '../components/datatables/datatables.component';
 import {ResultComponent} from '../components/result/result.component';
 import {CalculationService} from '../serivces/calculation.service';
+import {TermsComponent} from '../components/terms/terms.component';
 
 @Component({
     selector: 'app-home',
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
     formGroup: FormGroup = new FormGroup({
         lx: new FormControl(4),
@@ -36,6 +37,13 @@ export class HomePage {
                 private alertController: AlertController,
                 private loadingController: LoadingController,
                 private calculationService: CalculationService) {
+    }
+
+    ngOnInit() {
+        // this.modalController.create({
+        //     component: TermsComponent,
+        //     showBackdrop: false
+        // }).then(modal => modal.present());
     }
 
     async openWeightDialog(inputElement: Input) {
